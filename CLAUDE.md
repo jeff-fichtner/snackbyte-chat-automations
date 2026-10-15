@@ -49,12 +49,9 @@ literals rather than read from a branding module:
 - `src/web/screens/Home.tsx` — "Your grimoire" heading copy
 
 **Actual leaks** — the name has become an identifier:
-- **The repo name itself** — `snackbyte-grimoire` names the brand, not the function.
-  Under the convention it would be a descriptive name (`snackbyte-bot-hub` or similar —
-  the exact name is chosen when the rename migration is real, not before). This is the
-  top-level leak the ones below descend from; renaming it touches the GitHub remote,
-  Cloud Build triggers, and every local checkout, so it belongs to the same migration
-  as the infrastructure names.
+- **The repo name** — resolved 2026-10-15: the repository was replaced (history rewrite,
+  inbox #8cc351) and renamed `snackbyte-chat-automations`. The leaks below are unchanged
+  and remain one later migration.
 - `package.json` — package name and description
 - `package.json` — test database name (`.../grimoire`)
 - `src/main.ts` — startup log string
