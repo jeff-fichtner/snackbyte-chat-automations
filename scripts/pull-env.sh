@@ -14,7 +14,7 @@
 # default would write the wrong tier's production credentials into a file named for another.
 #
 # .env.local is NOT generated here. It points at your local Postgres and a dev bot, holds no
-# cloud secret, and is maintained by hand from .env.local.example.
+# cloud secret, and is committed: its one secret is a 1Password reference (see its header).
 set -euo pipefail
 
 env_name="${1:-}"
@@ -22,7 +22,7 @@ case "$env_name" in
   staging | prod) ;;
   *)
     echo "usage: scripts/pull-env.sh <staging|prod>   (writes .env.<env> from Secret Manager)" >&2
-    echo "       .env.local is hand-maintained from .env.local.example, not generated." >&2
+    echo "       .env.local is committed (secrets as 1Password references), not generated." >&2
     exit 2
     ;;
 esac
