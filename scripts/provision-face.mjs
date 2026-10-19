@@ -18,6 +18,20 @@
  */
 import pg from 'pg';
 
+import { assertNoOpReferences } from './lib/env-guard.mjs';
+
+// Started from a copied .env.local without op run, the bot token would still be its op://
+// reference and the first Discord call would fail with a 401. Refuse up front instead.
+try {
+  assertNoOpReferences(
+    process.env,
+    'op run --env-file=.env.local -- node scripts/provision-face.mjs <command>',
+  );
+} catch (error) {
+  console.error(`REFUSING: ${error.message}`);
+  process.exit(1);
+}
+
 const DISCORD_API = 'https://discord.com/api/v10';
 
 function required(name) {

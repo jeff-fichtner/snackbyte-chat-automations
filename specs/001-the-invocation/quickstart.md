@@ -8,7 +8,8 @@ in [spec.md](./spec.md); if they all pass, the feature is done.
 - Node 24 (`nvm use` reads `.nvmrc`)
 - A Postgres-compatible database (Supabase project), reachable via `DATABASE_URL`
 - A Discord application with a bot token, and the bot present in a test community
-- `.env` populated from `.env.example` — platform config only, never tenant data
+- The committed `.env.local` — platform config only, never tenant data; its bot token is a
+  1Password reference, so a command that needs the token runs under `op run --env-file=.env.local`
 
 ## Setup
 

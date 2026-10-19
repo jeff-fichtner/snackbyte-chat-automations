@@ -35,6 +35,20 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 
+import { assertNoOpReferences } from './lib/env-guard.mjs';
+
+// Started from a copied .env.local without op run, the bot token would still be its op://
+// reference and the first Discord call would fail with a 401. Refuse up front instead.
+try {
+  assertNoOpReferences(
+    process.env,
+    'op run --env-file=.env.local -- node scripts/provision-command.mjs <command>',
+  );
+} catch (error) {
+  console.error(`REFUSING: ${error.message}`);
+  process.exit(1);
+}
+
 const DISCORD_API = 'https://discord.com/api/v10';
 
 /** Discord's own constraint on a CHAT_INPUT command name. */
@@ -130,7 +144,10 @@ async function main() {
   async function discord(method, path, body) {
     const res = await fetch(DISCORD_API + path, {
       method,
-      headers: { authorization: `Bot ${token}`, 'content-type': 'application/json' },
+      headers: {
+        authorization: `Bot ${token}`,
+        'content-type': 'application/json',
+      },
       body: body ? JSON.stringify(body) : undefined,
     });
     if (!res.ok) throw new Error(`${method} ${path} → ${res.status} ${await res.text()}`);
