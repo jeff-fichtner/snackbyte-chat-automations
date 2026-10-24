@@ -1,6 +1,6 @@
 # Grimoire — one combined always-on service: the HTTP surface and the bundled web surface.
 
-FROM node:24-slim AS build
+FROM node:24.22.1-slim AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -14,7 +14,7 @@ COPY src ./src
 # immediately exits with MODULE_NOT_FOUND.
 RUN npx vite build && npx tsc -p tsconfig.build.json
 
-FROM node:24-slim AS runtime
+FROM node:24.22.1-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 
